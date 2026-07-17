@@ -3,6 +3,34 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+// Downloads real Termux bootstrap archives (busybox + bash + coreutils
+// userland, per architecture) from Termux's own official GitHub releases
+// at BUILD time -- exactly how termux-app's own build.gradle does it. This
+// runs on the CI/build machine (which has internet), not in any sandbox,
+// so the resulting APK ships a genuine, working Linux userland instead of
+// an empty placeholder.
+task downloadBootstraps {
+    doLast {
+        // Check https://github.com/termux/termux-packages/releases for the
+        // latest bootstrap-* tag and bump this if you want newer packages.
+        def bootstrapTag = "bootstrap-2026.06.21-r1+apt.android-7"
+        def arches = ["aarch64", "arm", "x86_64", "i686"]
+        def assetsDir = file("src/main/assets/bootstrap")
+        assetsDir.mkdirs()
+        arches.each { arch ->
+            def dest = new File(assetsDir, "bootstrap-${arch}.zip")
+            if (!dest.exists()) {
+                def url = "https://github.com/termux/termux-packages/releases/download/${bootstrapTag}/bootstrap-${arch}.zip"
+                println "Downloading Termux bootstrap: ${url}"
+                ant.get(src: url, dest: dest, verbose: true, retries: 3)
+            } else {
+                println "Bootstrap already present: ${dest}"
+            }
+        }
+    }
+}
+preBuild.dependsOn downloadBootstraps
+
 android {
     namespace 'com.aashutarminal'
     compileSdk 34

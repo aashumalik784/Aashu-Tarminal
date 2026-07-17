@@ -6,14 +6,27 @@ import java.util.zip.ZipInputStream
 
 /**
  * Handles the mechanics of laying out $PREFIX and extracting the base
- * rootfs archive bundled in assets (or downloaded on demand for smaller
- * APK size — see ToolInstaller for the download path).
+ * rootfs archive. The archive itself (bootstrap-<arch>.zip, containing a
+ * real busybox + bash + coreutils userland) is fetched from Termux's own
+ * official GitHub releases at BUILD time by the `downloadBootstraps`
+ * Gradle task in app/build.gradle -- see that file for details. This
+ * class only extracts whatever bootstrap-<arch>.zip already ships in
+ * assets/bootstrap/.
  */
 class EnvironmentSetup(
     private val context: Context,
     private val prefixDir: File,
     private val homeDir: File
 ) {
+    /** Maps Android's ABI name to Termux's bootstrap archive arch name. */
+    private fun termuxArchFor(abi: String): String = when (abi) {
+        "arm64-v8a" -> "aarch64"
+        "armeabi-v7a" -> "arm"
+        "x86_64" -> "x86_64"
+        "x86" -> "i686"
+        else -> "aarch64"
+    }
+
     fun createDirLayout() {
         listOf("bin", "lib", "etc", "tmp", "var", "share").forEach {
             File(prefixDir, it).mkdirs()
@@ -21,39 +34,65 @@ class EnvironmentSetup(
     }
 
     fun extractBaseRootfs() {
-        // Base rootfs ships as assets/bootstrap/rootfs-<abi>.zip (not
-        // included in this scaffold — populate via CI before release).
         val abi = android.os.Build.SUPPORTED_ABIS.firstOrNull() ?: "arm64-v8a"
-        val assetName = "bootstrap/rootfs-$abi.zip"
+        val arch = termuxArchFor(abi)
+        val assetName = "bootstrap/bootstrap-$arch.zip"
+
         runCatching {
             context.assets.open(assetName).use { input ->
                 ZipInputStream(input).use { zis ->
                     var entry = zis.nextEntry
                     while (entry != null) {
-                        val outFile = File(prefixDir, entry.name)
-                        if (entry.isDirectory) {
-                            outFile.mkdirs()
+                        // Termux bootstrap zips store symlinks as a special
+                        // "SYMLINKS.txt" manifest rather than real zip
+                        // symlink entries (zip has no native symlink
+                        // support). Handle that file specially; everything
+                        // else extracts as a normal file.
+                        if (entry.name == "SYMLINKS.txt") {
+                            zis.bufferedReader().readLines().forEach { line ->
+                                val parts = line.split("←", "<-").map { it.trim() }
+                                if (parts.size == 2) {
+                                    val target = File(prefixDir, parts[1])
+                                    target.parentFile?.mkdirs()
+                                    runCatching {
+                                        android.system.Os.symlink(parts[0], target.absolutePath)
+                                    }
+                                }
+                            }
                         } else {
-                            outFile.parentFile?.mkdirs()
-                            outFile.outputStream().use { zis.copyTo(it) }
-                            outFile.setExecutable(true)
+                            val outFile = File(prefixDir, entry.name)
+                            if (entry.isDirectory) {
+                                outFile.mkdirs()
+                            } else {
+                                outFile.parentFile?.mkdirs()
+                                outFile.outputStream().use { zis.copyTo(it) }
+                                outFile.setExecutable(true)
+                            }
                         }
                         entry = zis.nextEntry
                     }
                 }
             }
+        }.onFailure {
+            // No bundled bootstrap for this arch (e.g. local debug build
+            // that skipped downloadBootstraps) -- BootstrapManager will
+            // report isBootstrapped() == false and the UI can prompt a
+            // retry once the CI-built APK (with real assets) is installed.
         }
     }
 
     fun writeDefaultConfig() {
         File(homeDir, ".bashrc").writeText(
             """
-            export PS1='\w $ '
+            export PS1='\[\e[36m\]\w\[\e[0m\] $ '
+            export EDITOR=nano
             alias ll='ls -la'
             """.trimIndent()
         )
-        context.assets.open("bootstrap/welcome.txt").use { input ->
-            File(homeDir, ".motd").outputStream().use { input.copyTo(it) }
+        runCatching {
+            context.assets.open("bootstrap/welcome.txt").use { input ->
+                File(homeDir, ".motd").outputStream().use { input.copyTo(it) }
+            }
         }
     }
 }

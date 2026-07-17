@@ -12,3 +12,4 @@
 *.keystore
 *.jks
 local.properties
+app/src/main/assets/bootstrap/bootstrap-*.zip

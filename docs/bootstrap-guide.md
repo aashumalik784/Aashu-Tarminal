@@ -13,6 +13,13 @@ After that, individual tools are installed on demand via `ToolInstaller`,
 which fetches a tool's package, verifies its checksum, and extracts it
 into `$PREFIX`.
 
-This is **Aashu Bootstrap** — a from-scratch bootstrap implementation
-(not copied from any other project), designed to be simple to audit and
-easy to extend with new tool categories.
+**Rootfs source:** the actual busybox/bash/coreutils userland ships as
+`assets/bootstrap/bootstrap-<arch>.zip`, downloaded automatically at BUILD
+time (see the `downloadBootstraps` Gradle task in `app/build.gradle`) from
+Termux's own official GitHub releases (termux/termux-packages) -- the same
+mechanism termux-app itself uses internally. This means the first CI build
+after cloning will fetch real, working binaries with no manual steps.
+
+The scripts and glue code around that rootfs (`bootstrap.sh`,
+`setup_env.sh`, `BootstrapManager.kt`, `EnvironmentSetup.kt`) are original
+-- written for this app, not copied from Termux.
