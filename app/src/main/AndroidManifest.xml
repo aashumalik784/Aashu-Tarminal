@@ -9,7 +9,8 @@
     <application
         android:name=".AashuApp"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
+        android:roundIcon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AashuTarminal"
         android:supportsRtl="true">

@@ -11,9 +11,13 @@ plugins {
 // an empty placeholder.
 task downloadBootstraps {
     doLast {
-        // Check https://github.com/termux/termux-packages/releases for the
-        // latest bootstrap-* tag and bump this if you want newer packages.
-        def bootstrapTag = "bootstrap-2026.06.21-r1+apt.android-7"
+        // Ask GitHub for the latest bootstrap-* release instead of
+        // hardcoding a tag, so this never goes stale.
+        def apiUrl = "https://api.github.com/repos/termux/termux-packages/releases/latest"
+        def json = new groovy.json.JsonSlurper().parse(new URL(apiUrl))
+        def bootstrapTag = json.tag_name
+        println "Using Termux bootstrap release: ${bootstrapTag}"
+
         def arches = ["aarch64", "arm", "x86_64", "i686"]
         def assetsDir = file("src/main/assets/bootstrap")
         assetsDir.mkdirs()
