@@ -1,0 +1,112 @@
+[
+  {
+    "name": "make",
+    "category": "build-tools",
+    "version": "4.4.1",
+    "description": "GNU build automation tool",
+    "binary": "make",
+    "size_mb": 5,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/make-4.4.1.tar.gz",
+    "sha256": "0ac479e0266fec2709e5e6420347366905b35c2bdbdf2f3b4365fe4eab6d8fb1",
+    "depends": []
+  },
+  {
+    "name": "cmake",
+    "category": "build-tools",
+    "version": "3.30.0",
+    "description": "Cross-platform build system generator",
+    "binary": "cmake",
+    "size_mb": 12,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/cmake-3.30.0.tar.gz",
+    "sha256": "8f81678ec383e602cd586c89b5897bc17f64bad0d011b1b5ef2f256a33a4eeac",
+    "depends": []
+  },
+  {
+    "name": "ninja",
+    "category": "build-tools",
+    "version": "1.12.1",
+    "description": "Small fast build system",
+    "binary": "ninja",
+    "size_mb": 19,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/ninja-1.12.1.tar.gz",
+    "sha256": "a776a8d917ca9a040dd20f0bad3a0fe7bee85f16b4077464364ba7f4b98ac7cd",
+    "depends": []
+  },
+  {
+    "name": "gradle",
+    "category": "build-tools",
+    "version": "8.9",
+    "description": "Build automation for JVM projects",
+    "binary": "gradle",
+    "size_mb": 26,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/gradle-8.9.tar.gz",
+    "sha256": "46bbfb01d0bcb43f37ee52ff346d64885203c9f04e7879794be3cfdcc16e8698",
+    "depends": []
+  },
+  {
+    "name": "maven",
+    "category": "build-tools",
+    "version": "3.9.8",
+    "description": "Build automation for Java projects",
+    "binary": "mvn",
+    "size_mb": 33,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/maven-3.9.8.tar.gz",
+    "sha256": "11813614091f397a7a3f5cd14db022b36bb81ad68829d4954b078490140dfadb",
+    "depends": []
+  },
+  {
+    "name": "bazel",
+    "category": "build-tools",
+    "version": "7.2.1",
+    "description": "Google's build and test tool",
+    "binary": "bazel",
+    "size_mb": 40,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/bazel-7.2.1.tar.gz",
+    "sha256": "ca3dbb5ca41b2f79df572ae5f071c07a5d55ee232d0c8abbaa9e10d5edbd0261",
+    "depends": []
+  },
+  {
+    "name": "meson",
+    "category": "build-tools",
+    "version": "1.4.1",
+    "description": "Fast, user-friendly build system",
+    "binary": "meson",
+    "size_mb": 47,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/meson-1.4.1.tar.gz",
+    "sha256": "c112a133dd296ffa1398f181d65f3e417fb3e20676e88b72a7366c2987b9d20c",
+    "depends": []
+  },
+  {
+    "name": "autoconf",
+    "category": "build-tools",
+    "version": "2.72",
+    "description": "Configure script generator",
+    "binary": "autoconf",
+    "size_mb": 54,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/autoconf-2.72.tar.gz",
+    "sha256": "789f14871f0fbd5c382a3e8ae0a2be43c28f80253042f925f0c74004704ee635",
+    "depends": []
+  },
+  {
+    "name": "automake",
+    "category": "build-tools",
+    "version": "1.16.5",
+    "description": "Makefile generator",
+    "binary": "automake",
+    "size_mb": 6,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/automake-1.16.5.tar.gz",
+    "sha256": "5ae09169c7c8cd0aab02c31e439e55ac7b1973b00d380b777dc41ea8daeb4a1e",
+    "depends": []
+  },
+  {
+    "name": "pkg-config",
+    "category": "build-tools",
+    "version": "0.29.2",
+    "description": "Compile flag helper",
+    "binary": "pkg-config",
+    "size_mb": 13,
+    "download_url": "https://packages.aashutarminal.dev/build-tools/pkg-config-0.29.2.tar.gz",
+    "sha256": "525f112ecd73284c2ab016a3b1de161dcf0c4ca9e5effcd2a3fc4726c1222320",
+    "depends": []
+  }
+]

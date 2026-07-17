@@ -1,0 +1,134 @@
+[
+  {
+    "name": "mariadb",
+    "category": "databases",
+    "version": "11.4.2",
+    "description": "MariaDB relational database server",
+    "binary": "mysqld",
+    "size_mb": 5,
+    "download_url": "https://packages.aashutarminal.dev/databases/mariadb-11.4.2.tar.gz",
+    "sha256": "5ec8da867822950221279d62cad600ce09aebb6e4ae2f371da11dd5ed298b4cb",
+    "depends": []
+  },
+  {
+    "name": "postgresql",
+    "category": "databases",
+    "version": "16.3",
+    "description": "PostgreSQL relational database server",
+    "binary": "postgres",
+    "size_mb": 12,
+    "download_url": "https://packages.aashutarminal.dev/databases/postgresql-16.3.tar.gz",
+    "sha256": "7f23e95f5e3237534e8b838602dff60ce9871fc5d7bd113652c11ad54dc8e296",
+    "depends": []
+  },
+  {
+    "name": "redis",
+    "category": "databases",
+    "version": "7.4.0",
+    "description": "Redis in-memory data store",
+    "binary": "redis-server",
+    "size_mb": 19,
+    "download_url": "https://packages.aashutarminal.dev/databases/redis-7.4.0.tar.gz",
+    "sha256": "7ef54b7971bbddde66d104efd19f9ba0914c9e1a4d770540450eaf97e73eb953",
+    "depends": []
+  },
+  {
+    "name": "sqlite",
+    "category": "databases",
+    "version": "3.46.0",
+    "description": "SQLite embedded database engine",
+    "binary": "sqlite3",
+    "size_mb": 26,
+    "download_url": "https://packages.aashutarminal.dev/databases/sqlite-3.46.0.tar.gz",
+    "sha256": "3159934a4045b4cc98bddd86a2779fc8d53ac3bbe9edc21e2390d862c7ecef8f",
+    "depends": []
+  },
+  {
+    "name": "mongodb-tools",
+    "category": "databases",
+    "version": "2.2.7",
+    "description": "MongoDB shell and tools",
+    "binary": "mongosh",
+    "size_mb": 33,
+    "download_url": "https://packages.aashutarminal.dev/databases/mongodb-tools-2.2.7.tar.gz",
+    "sha256": "9aa2547e5e2c7614fd6fdaeaa000b0d69476172319c46940ce1dc79b4070e208",
+    "depends": []
+  },
+  {
+    "name": "mysql-client",
+    "category": "databases",
+    "version": "8.4.1",
+    "description": "MySQL command-line client",
+    "binary": "mysql",
+    "size_mb": 40,
+    "download_url": "https://packages.aashutarminal.dev/databases/mysql-client-8.4.1.tar.gz",
+    "sha256": "3f7892fbb66539882083a02c7cc36e486b688e3725f085871e1d2aca68e38f97",
+    "depends": []
+  },
+  {
+    "name": "cassandra-tools",
+    "category": "databases",
+    "version": "5.0.0",
+    "description": "Cassandra query shell",
+    "binary": "cqlsh",
+    "size_mb": 47,
+    "download_url": "https://packages.aashutarminal.dev/databases/cassandra-tools-5.0.0.tar.gz",
+    "sha256": "d9168cd4aa7249f48d06e4055d0f290ec9bde5e99785f0ad409341157e204f9a",
+    "depends": []
+  },
+  {
+    "name": "couchdb",
+    "category": "databases",
+    "version": "3.3.3",
+    "description": "Apache CouchDB document database",
+    "binary": "couchdb",
+    "size_mb": 54,
+    "download_url": "https://packages.aashutarminal.dev/databases/couchdb-3.3.3.tar.gz",
+    "sha256": "6d69e502e13be1c4bf87ea43a26d5d9bcc7965ea5cdfd0ce0f932e1f338d3753",
+    "depends": []
+  },
+  {
+    "name": "influxdb",
+    "category": "databases",
+    "version": "2.7.10",
+    "description": "InfluxDB time-series database",
+    "binary": "influxd",
+    "size_mb": 6,
+    "download_url": "https://packages.aashutarminal.dev/databases/influxdb-2.7.10.tar.gz",
+    "sha256": "12f1397575234cde0b1ea2526f99c450a92dab4411d65dab13eff638bbd556cf",
+    "depends": []
+  },
+  {
+    "name": "memcached",
+    "category": "databases",
+    "version": "1.6.31",
+    "description": "Distributed memory object caching",
+    "binary": "memcached",
+    "size_mb": 13,
+    "download_url": "https://packages.aashutarminal.dev/databases/memcached-1.6.31.tar.gz",
+    "sha256": "5feb6b3cbb82c62f63038631312f13e0bd37fec7f04cd2ed47b39bd6b9319691",
+    "depends": []
+  },
+  {
+    "name": "etcd",
+    "category": "databases",
+    "version": "3.5.14",
+    "description": "Distributed key-value store",
+    "binary": "etcd",
+    "size_mb": 20,
+    "download_url": "https://packages.aashutarminal.dev/databases/etcd-3.5.14.tar.gz",
+    "sha256": "f415aa070f696aa35c57c7817a95357226227063fca255e1adb0fd3d4f08db08",
+    "depends": []
+  },
+  {
+    "name": "duckdb",
+    "category": "databases",
+    "version": "1.0.0",
+    "description": "In-process analytical database",
+    "binary": "duckdb",
+    "size_mb": 27,
+    "download_url": "https://packages.aashutarminal.dev/databases/duckdb-1.0.0.tar.gz",
+    "sha256": "53525225551dec4ccb2cc36410561da03bedff0cae71d65f74733f789907debb",
+    "depends": []
+  }
+]

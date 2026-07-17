@@ -1,0 +1,13 @@
+   _____  ___   _____ __  __ __  __
+  / _  / / _ | / __(_)/ / / / / / /
+ / /_/ / / __ |_\ \/ // /_/ / /_/ /
+/_____/ /_/ |_/___/_/\____/\____/
+
+Aashu Tarminal — your terminal, your rules.
+
+Quick start:
+  aashu-pkg list              show all tools
+  aashu-pkg install <name>    install a tool
+  aashu-pkg search <query>    search the registry
+
+Docs: docs/bootstrap-guide.md in the repo.

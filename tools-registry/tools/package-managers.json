@@ -1,0 +1,112 @@
+[
+  {
+    "name": "npm",
+    "category": "package-managers",
+    "version": "10.8.1",
+    "description": "Node.js package manager",
+    "binary": "npm",
+    "size_mb": 5,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/npm-10.8.1.tar.gz",
+    "sha256": "3edeb2751c8e19c481860b8ca700b932539558c61907072c714e45d11d61cac9",
+    "depends": []
+  },
+  {
+    "name": "pip",
+    "category": "package-managers",
+    "version": "24.1.2",
+    "description": "Python package installer",
+    "binary": "pip",
+    "size_mb": 12,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/pip-24.1.2.tar.gz",
+    "sha256": "7bdc6a7c2492549384421e2b1caf184d54438aa4e657d8d4fbbc847b92e18aa7",
+    "depends": []
+  },
+  {
+    "name": "cargo",
+    "category": "package-managers",
+    "version": "1.79.0",
+    "description": "Rust package manager",
+    "binary": "cargo",
+    "size_mb": 19,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/cargo-1.79.0.tar.gz",
+    "sha256": "59af4f095cc3bbbd7c6f42cf3b16f235b34d71e462caba2dfd47ac0a814aea5c",
+    "depends": []
+  },
+  {
+    "name": "gem",
+    "category": "package-managers",
+    "version": "3.5.11",
+    "description": "Ruby package manager",
+    "binary": "gem",
+    "size_mb": 26,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/gem-3.5.11.tar.gz",
+    "sha256": "e109dfe487fc6a1602b0a79bf0183b781645805bfd8b1c10bec2ed883b872eb7",
+    "depends": []
+  },
+  {
+    "name": "composer",
+    "category": "package-managers",
+    "version": "2.7.7",
+    "description": "PHP dependency manager",
+    "binary": "composer",
+    "size_mb": 33,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/composer-2.7.7.tar.gz",
+    "sha256": "35a6b99ccac28359ec7220b164c7d2ee82952c883117adca0de18f105f698b96",
+    "depends": []
+  },
+  {
+    "name": "yarn",
+    "category": "package-managers",
+    "version": "1.22.22",
+    "description": "Alternative Node.js package manager",
+    "binary": "yarn",
+    "size_mb": 40,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/yarn-1.22.22.tar.gz",
+    "sha256": "5b444fcf18cd951163842553d7e7f8b206a8207e075c3f3e9a8fc0b96d6a3496",
+    "depends": []
+  },
+  {
+    "name": "pnpm",
+    "category": "package-managers",
+    "version": "9.5.0",
+    "description": "Fast, disk-efficient package manager",
+    "binary": "pnpm",
+    "size_mb": 47,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/pnpm-9.5.0.tar.gz",
+    "sha256": "f9e915755f255dde28cf454db5cb7abfd09bfa8821dd06b807392872d91e55f9",
+    "depends": []
+  },
+  {
+    "name": "apt-tools",
+    "category": "package-managers",
+    "version": "2.8.1",
+    "description": "Debian-style package tooling (userland)",
+    "binary": "apt-get",
+    "size_mb": 54,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/apt-tools-2.8.1.tar.gz",
+    "sha256": "9eaa99b53a160435645813c1950a1141001191cf99738cac9964af2dceb517c1",
+    "depends": []
+  },
+  {
+    "name": "conda-forge",
+    "category": "package-managers",
+    "version": "24.5.0",
+    "description": "Cross-language package manager",
+    "binary": "conda",
+    "size_mb": 6,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/conda-forge-24.5.0.tar.gz",
+    "sha256": "1eb2921172b4af1d40fa7b6cc19373b0874a8a351caf11fc837d0801e94b49c7",
+    "depends": []
+  },
+  {
+    "name": "brew-linux",
+    "category": "package-managers",
+    "version": "4.3.9",
+    "description": "Homebrew for Linux",
+    "binary": "brew",
+    "size_mb": 13,
+    "download_url": "https://packages.aashutarminal.dev/package-managers/brew-linux-4.3.9.tar.gz",
+    "sha256": "eaa40506c1aa3814e6f2933ed3e8162f8288391e7eadc92a328dacc4ddd61d19",
+    "depends": []
+  }
+]

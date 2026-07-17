@@ -1,0 +1,101 @@
+[
+  {
+    "name": "aws-cli",
+    "category": "cloud-tools",
+    "version": "2.17.9",
+    "description": "Amazon Web Services CLI",
+    "binary": "aws",
+    "size_mb": 5,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/aws-cli-2.17.9.tar.gz",
+    "sha256": "a5a5626fc6ff5c69efd7f422e4dd0f9d09b3be326fb50d8c78376694c2e087e3",
+    "depends": []
+  },
+  {
+    "name": "gcloud-cli",
+    "category": "cloud-tools",
+    "version": "480.0.0",
+    "description": "Google Cloud CLI",
+    "binary": "gcloud",
+    "size_mb": 12,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/gcloud-cli-480.0.0.tar.gz",
+    "sha256": "153e91d6963f1a4b81984a1c5615ca58f583cef6733bb826d85aa3035e39efe8",
+    "depends": []
+  },
+  {
+    "name": "azure-cli",
+    "category": "cloud-tools",
+    "version": "2.62.0",
+    "description": "Microsoft Azure CLI",
+    "binary": "az",
+    "size_mb": 19,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/azure-cli-2.62.0.tar.gz",
+    "sha256": "9d71aa441e968bf09b0e116aee9b9aabb9ec1e41ba34d7c90be15dd260b2e467",
+    "depends": []
+  },
+  {
+    "name": "doctl",
+    "category": "cloud-tools",
+    "version": "1.116.0",
+    "description": "DigitalOcean CLI",
+    "binary": "doctl",
+    "size_mb": 26,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/doctl-1.116.0.tar.gz",
+    "sha256": "860dc4ad8d7f7fd772672c06b0d6d250986209115f63b10c22161c12f3691e2b",
+    "depends": []
+  },
+  {
+    "name": "heroku-cli",
+    "category": "cloud-tools",
+    "version": "9.5.1",
+    "description": "Heroku platform CLI",
+    "binary": "heroku",
+    "size_mb": 33,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/heroku-cli-9.5.1.tar.gz",
+    "sha256": "04518cd956a7665050f6cc17d997ee4ee070555ee174d0a76843e2b6c2c5660b",
+    "depends": []
+  },
+  {
+    "name": "firebase-tools",
+    "category": "cloud-tools",
+    "version": "13.13.0",
+    "description": "Firebase CLI",
+    "binary": "firebase",
+    "size_mb": 40,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/firebase-tools-13.13.0.tar.gz",
+    "sha256": "31d0e5a789c69e69f3976ba59ab1fd5c01ced4d0158f299cbfc1feda51ce64cd",
+    "depends": []
+  },
+  {
+    "name": "s3cmd",
+    "category": "cloud-tools",
+    "version": "2.4.0",
+    "description": "S3-compatible storage CLI",
+    "binary": "s3cmd",
+    "size_mb": 47,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/s3cmd-2.4.0.tar.gz",
+    "sha256": "11584bf396601dc10161bdebb48e9ed0f87a8fe1b6bbf01731b7684b5ca868e3",
+    "depends": []
+  },
+  {
+    "name": "cloudflared",
+    "category": "cloud-tools",
+    "version": "2024.6.1",
+    "description": "Cloudflare Tunnel client",
+    "binary": "cloudflared",
+    "size_mb": 54,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/cloudflared-2024.6.1.tar.gz",
+    "sha256": "009d3a02fc7e29bafcfb6d74a6e7aca8fed8fa4aefd167b00d3fbd64b8a2fa73",
+    "depends": []
+  },
+  {
+    "name": "linode-cli",
+    "category": "cloud-tools",
+    "version": "5.42.0",
+    "description": "Linode CLI",
+    "binary": "linode-cli",
+    "size_mb": 6,
+    "download_url": "https://packages.aashutarminal.dev/cloud-tools/linode-cli-5.42.0.tar.gz",
+    "sha256": "4a94f50f2f29ab6866d4eb888ef952c1416b701e8bad5c5edd877f032bd94086",
+    "depends": []
+  }
+]

@@ -1,0 +1,156 @@
+[
+  {
+    "name": "curl",
+    "category": "networking",
+    "version": "8.8.0",
+    "description": "Command-line HTTP/network client",
+    "binary": "curl",
+    "size_mb": 5,
+    "download_url": "https://packages.aashutarminal.dev/networking/curl-8.8.0.tar.gz",
+    "sha256": "8ffc5a681272d15c29ee93ecdba5c89ca94679ebc28d528db0305044ebbc67d1",
+    "depends": []
+  },
+  {
+    "name": "wget",
+    "category": "networking",
+    "version": "1.24.5",
+    "description": "Non-interactive network downloader",
+    "binary": "wget",
+    "size_mb": 12,
+    "download_url": "https://packages.aashutarminal.dev/networking/wget-1.24.5.tar.gz",
+    "sha256": "7b774279943180b94ad6c873330f5258e7bffd9cef0705f37fead552d174d872",
+    "depends": []
+  },
+  {
+    "name": "nmap",
+    "category": "networking",
+    "version": "7.95",
+    "description": "Network exploration and security scanner",
+    "binary": "nmap",
+    "size_mb": 19,
+    "download_url": "https://packages.aashutarminal.dev/networking/nmap-7.95.tar.gz",
+    "sha256": "68f0cd2b6bff31eee86aed939c19973b3864d0013d2c91d1830c445d39a14185",
+    "depends": []
+  },
+  {
+    "name": "netcat-openbsd",
+    "category": "networking",
+    "version": "1.229",
+    "description": "TCP/IP swiss army knife",
+    "binary": "nc",
+    "size_mb": 26,
+    "download_url": "https://packages.aashutarminal.dev/networking/netcat-openbsd-1.229.tar.gz",
+    "sha256": "2542494c8125b23bd0ba36ea80a2a67842342f6706c9bcc56380ff70f35c6bb5",
+    "depends": []
+  },
+  {
+    "name": "openssh",
+    "category": "networking",
+    "version": "9.7p1",
+    "description": "Secure shell client and server",
+    "binary": "ssh",
+    "size_mb": 33,
+    "download_url": "https://packages.aashutarminal.dev/networking/openssh-9.7p1.tar.gz",
+    "sha256": "9eae182aff9061399fdbbf87ffc4045b9b7af9cbd14468addfa9c91dfc54fd82",
+    "depends": []
+  },
+  {
+    "name": "mtr",
+    "category": "networking",
+    "version": "0.95",
+    "description": "Network diagnostic tool",
+    "binary": "mtr",
+    "size_mb": 40,
+    "download_url": "https://packages.aashutarminal.dev/networking/mtr-0.95.tar.gz",
+    "sha256": "dbd1258de201c2616b7750ed843095962e6c821e9ca5bc3c4d64add47348df80",
+    "depends": []
+  },
+  {
+    "name": "iperf3",
+    "category": "networking",
+    "version": "3.17.1",
+    "description": "Network bandwidth measurement",
+    "binary": "iperf3",
+    "size_mb": 47,
+    "download_url": "https://packages.aashutarminal.dev/networking/iperf3-3.17.1.tar.gz",
+    "sha256": "f6aa3887e69aad41dec4ec017fa02c921c774f657889e20dc4ad5823518b155b",
+    "depends": []
+  },
+  {
+    "name": "tcpdump",
+    "category": "networking",
+    "version": "4.99.4",
+    "description": "Packet analyzer",
+    "binary": "tcpdump",
+    "size_mb": 54,
+    "download_url": "https://packages.aashutarminal.dev/networking/tcpdump-4.99.4.tar.gz",
+    "sha256": "6d93a6531c25ec55d30096a13c6b039d04f946bf35c1c9ad1968a62b4ea04450",
+    "depends": []
+  },
+  {
+    "name": "dnsutils",
+    "category": "networking",
+    "version": "9.18.27",
+    "description": "DNS lookup utilities",
+    "binary": "dig",
+    "size_mb": 6,
+    "download_url": "https://packages.aashutarminal.dev/networking/dnsutils-9.18.27.tar.gz",
+    "sha256": "db9bd9ed8e6641ea2a1cd64f03138e3eadef50dd4c8e0f61d2c5869120f2597e",
+    "depends": []
+  },
+  {
+    "name": "whois",
+    "category": "networking",
+    "version": "5.5.23",
+    "description": "Domain lookup client",
+    "binary": "whois",
+    "size_mb": 13,
+    "download_url": "https://packages.aashutarminal.dev/networking/whois-5.5.23.tar.gz",
+    "sha256": "ce1352d24e58e543be015b971c5d5500ecb8a8e0dbeb9e996bb80c925eb44701",
+    "depends": []
+  },
+  {
+    "name": "rsync",
+    "category": "networking",
+    "version": "3.3.0",
+    "description": "Fast incremental file transfer",
+    "binary": "rsync",
+    "size_mb": 20,
+    "download_url": "https://packages.aashutarminal.dev/networking/rsync-3.3.0.tar.gz",
+    "sha256": "86262a4c433ae933215c1d60f0c38ea8c32612909789efce132dbe79a1f15c25",
+    "depends": []
+  },
+  {
+    "name": "socat",
+    "category": "networking",
+    "version": "1.8.0.0",
+    "description": "Multipurpose relay tool",
+    "binary": "socat",
+    "size_mb": 27,
+    "download_url": "https://packages.aashutarminal.dev/networking/socat-1.8.0.0.tar.gz",
+    "sha256": "461769413e91c02a07e643bca7ea4a098d14221f729e0e1774c1d2a3ac7aa8ac",
+    "depends": []
+  },
+  {
+    "name": "httpie",
+    "category": "networking",
+    "version": "3.2.3",
+    "description": "User-friendly HTTP client",
+    "binary": "http",
+    "size_mb": 34,
+    "download_url": "https://packages.aashutarminal.dev/networking/httpie-3.2.3.tar.gz",
+    "sha256": "2220d7fb73540a6344caa772730aba685ed8cae3c9c55d52501c3be60f6edfb1",
+    "depends": []
+  },
+  {
+    "name": "proxychains-ng",
+    "category": "networking",
+    "version": "4.17",
+    "description": "Proxy chaining tool",
+    "binary": "proxychains4",
+    "size_mb": 41,
+    "download_url": "https://packages.aashutarminal.dev/networking/proxychains-ng-4.17.tar.gz",
+    "sha256": "6e184d1dc6302ef0d57f1f751ef0f81221031ed065dad4949312770468f7075a",
+    "depends": []
+  }
+]

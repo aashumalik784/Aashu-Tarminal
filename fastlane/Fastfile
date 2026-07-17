@@ -1,0 +1,14 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build debug APK"
+  lane :debug do
+    gradle(task: "assembleDebug")
+  end
+
+  desc "Deploy to Play Store internal track"
+  lane :internal do
+    gradle(task: "assembleRelease")
+    upload_to_play_store(track: "internal")
+  end
+end

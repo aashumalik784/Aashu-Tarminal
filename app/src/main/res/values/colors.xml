@@ -1,0 +1,5 @@
+<resources>
+    <color name="terminal_bg">#0D1117</color>
+    <color name="terminal_fg">#E6EDF3</color>
+    <color name="accent">#00E5A0</color>
+</resources>

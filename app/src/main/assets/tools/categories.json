@@ -1,0 +1,12 @@
+{
+  "build-tools": 10,
+  "cloud-tools": 9,
+  "databases": 12,
+  "devops": 14,
+  "editors": 8,
+  "languages": 25,
+  "misc": 24,
+  "networking": 14,
+  "package-managers": 10,
+  "security": 12
+}

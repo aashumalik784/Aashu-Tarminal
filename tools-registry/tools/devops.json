@@ -1,0 +1,156 @@
+[
+  {
+    "name": "docker-cli",
+    "category": "devops",
+    "version": "27.0.3",
+    "description": "Docker CLI (client only)",
+    "binary": "docker",
+    "size_mb": 5,
+    "download_url": "https://packages.aashutarminal.dev/devops/docker-cli-27.0.3.tar.gz",
+    "sha256": "71166b3a6c130e797a96d50db97ca26d6b92df534fec3179d728780c9ac9d9e7",
+    "depends": []
+  },
+  {
+    "name": "kubernetes-cli",
+    "category": "devops",
+    "version": "1.30.2",
+    "description": "Kubernetes command-line tool",
+    "binary": "kubectl",
+    "size_mb": 12,
+    "download_url": "https://packages.aashutarminal.dev/devops/kubernetes-cli-1.30.2.tar.gz",
+    "sha256": "2c0a5145fc26d16e005036b0a994325bcec452455a99c8f37b1eab1a56e449dd",
+    "depends": []
+  },
+  {
+    "name": "terraform",
+    "category": "devops",
+    "version": "1.9.2",
+    "description": "Infrastructure as code tool",
+    "binary": "terraform",
+    "size_mb": 19,
+    "download_url": "https://packages.aashutarminal.dev/devops/terraform-1.9.2.tar.gz",
+    "sha256": "7e7685f2bbc99954b20a2ca4373b43f868c03f0a379b6b4765b8c360feab0f3b",
+    "depends": []
+  },
+  {
+    "name": "ansible",
+    "category": "devops",
+    "version": "10.1.0",
+    "description": "IT automation and config management",
+    "binary": "ansible",
+    "size_mb": 26,
+    "download_url": "https://packages.aashutarminal.dev/devops/ansible-10.1.0.tar.gz",
+    "sha256": "c4336132a01668d48a34a1d124175091c611d2143c082de9fc38b1edc75a6324",
+    "depends": []
+  },
+  {
+    "name": "helm",
+    "category": "devops",
+    "version": "3.15.3",
+    "description": "Kubernetes package manager",
+    "binary": "helm",
+    "size_mb": 33,
+    "download_url": "https://packages.aashutarminal.dev/devops/helm-3.15.3.tar.gz",
+    "sha256": "3141df58f242d18ba79add791949189c60f58f23ec8835755abf24a7811c3606",
+    "depends": []
+  },
+  {
+    "name": "vagrant",
+    "category": "devops",
+    "version": "2.4.1",
+    "description": "Development environment manager",
+    "binary": "vagrant",
+    "size_mb": 40,
+    "download_url": "https://packages.aashutarminal.dev/devops/vagrant-2.4.1.tar.gz",
+    "sha256": "642bc00b04cdb8db7f19b7b227a6dd810df67cfb19eb9480479d3c8b03009beb",
+    "depends": []
+  },
+  {
+    "name": "packer",
+    "category": "devops",
+    "version": "1.11.0",
+    "description": "Machine image builder",
+    "binary": "packer",
+    "size_mb": 47,
+    "download_url": "https://packages.aashutarminal.dev/devops/packer-1.11.0.tar.gz",
+    "sha256": "d9e1035fd70bb5de87d1e9b4a9b7df03b5915cd48665cdeee05c4442d2a0a048",
+    "depends": []
+  },
+  {
+    "name": "k9s",
+    "category": "devops",
+    "version": "0.32.5",
+    "description": "Terminal UI for Kubernetes",
+    "binary": "k9s",
+    "size_mb": 54,
+    "download_url": "https://packages.aashutarminal.dev/devops/k9s-0.32.5.tar.gz",
+    "sha256": "588973b475e6d7610956940b92b64c7a0a1533c3188dde2e58fc5eebd89b68ca",
+    "depends": []
+  },
+  {
+    "name": "podman",
+    "category": "devops",
+    "version": "5.1.2",
+    "description": "Daemonless container engine",
+    "binary": "podman",
+    "size_mb": 6,
+    "download_url": "https://packages.aashutarminal.dev/devops/podman-5.1.2.tar.gz",
+    "sha256": "b6fc4c08882e991c0685e3760d8261238c7496b0f5e4042436301082ceed5396",
+    "depends": []
+  },
+  {
+    "name": "consul",
+    "category": "devops",
+    "version": "1.19.0",
+    "description": "Service mesh and discovery",
+    "binary": "consul",
+    "size_mb": 13,
+    "download_url": "https://packages.aashutarminal.dev/devops/consul-1.19.0.tar.gz",
+    "sha256": "13895f354daa2f2fd7adec783376f13546283e677d4f25876e83c4920dc778d2",
+    "depends": []
+  },
+  {
+    "name": "vault",
+    "category": "devops",
+    "version": "1.17.2",
+    "description": "Secrets management tool",
+    "binary": "vault",
+    "size_mb": 20,
+    "download_url": "https://packages.aashutarminal.dev/devops/vault-1.17.2.tar.gz",
+    "sha256": "a0f2b4cab48a60bc92e46de24c0cb50386b00543f137696736bc95256424bfa6",
+    "depends": []
+  },
+  {
+    "name": "jenkins-cli",
+    "category": "devops",
+    "version": "2.462",
+    "description": "Jenkins CLI client",
+    "binary": "jenkins-cli",
+    "size_mb": 27,
+    "download_url": "https://packages.aashutarminal.dev/devops/jenkins-cli-2.462.tar.gz",
+    "sha256": "d5f8bcbac9867446bc70ff9c9cfd7a301ffbeeee6559407ebdea5abd1a833ae3",
+    "depends": []
+  },
+  {
+    "name": "prometheus",
+    "category": "devops",
+    "version": "2.53.0",
+    "description": "Monitoring and alerting toolkit",
+    "binary": "prometheus",
+    "size_mb": 34,
+    "download_url": "https://packages.aashutarminal.dev/devops/prometheus-2.53.0.tar.gz",
+    "sha256": "e27a7dec6582f3a7a6768019d66ddce6f0f16eb45586d393f4d11c84953f9f44",
+    "depends": []
+  },
+  {
+    "name": "grafana-cli",
+    "category": "devops",
+    "version": "11.1.0",
+    "description": "Grafana CLI tool",
+    "binary": "grafana-cli",
+    "size_mb": 41,
+    "download_url": "https://packages.aashutarminal.dev/devops/grafana-cli-11.1.0.tar.gz",
+    "sha256": "2a7eddecf816d247f17d7ed65bf6c788f709519321cc886c8f8f0cec3e9b8b54",
+    "depends": []
+  }
+]

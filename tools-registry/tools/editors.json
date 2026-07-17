@@ -1,0 +1,90 @@
+[
+  {
+    "name": "vim",
+    "category": "editors",
+    "version": "9.1",
+    "description": "Vi IMproved text editor",
+    "binary": "vim",
+    "size_mb": 5,
+    "download_url": "https://packages.aashutarminal.dev/editors/vim-9.1.tar.gz",
+    "sha256": "4014c2ba77f85e2b0bcd14d448a8c6924733d42682a105028925b448a8896d32",
+    "depends": []
+  },
+  {
+    "name": "neovim",
+    "category": "editors",
+    "version": "0.10.1",
+    "description": "Hyperextensible Vim-based editor",
+    "binary": "nvim",
+    "size_mb": 12,
+    "download_url": "https://packages.aashutarminal.dev/editors/neovim-0.10.1.tar.gz",
+    "sha256": "9f4d3362d3044aeec85a9c42a3344bc26117f1f8fab0470e973c42e4ceb26548",
+    "depends": []
+  },
+  {
+    "name": "nano",
+    "category": "editors",
+    "version": "8.0",
+    "description": "Simple terminal text editor",
+    "binary": "nano",
+    "size_mb": 19,
+    "download_url": "https://packages.aashutarminal.dev/editors/nano-8.0.tar.gz",
+    "sha256": "a492ccedbda3f33e4218aa0f36988bcab08e41470e73223c9f159500a18fce26",
+    "depends": []
+  },
+  {
+    "name": "emacs",
+    "category": "editors",
+    "version": "29.4",
+    "description": "Extensible text editor",
+    "binary": "emacs",
+    "size_mb": 26,
+    "download_url": "https://packages.aashutarminal.dev/editors/emacs-29.4.tar.gz",
+    "sha256": "abed1bc85b6dc3a68eb88accb35ea82a12d897ed86c813e9c0105488d78ac421",
+    "depends": []
+  },
+  {
+    "name": "micro",
+    "category": "editors",
+    "version": "2.0.14",
+    "description": "Modern terminal-based text editor",
+    "binary": "micro",
+    "size_mb": 33,
+    "download_url": "https://packages.aashutarminal.dev/editors/micro-2.0.14.tar.gz",
+    "sha256": "fead2cd415fbc8910500a9038c250daab4196467bc05172e5b202dde2be0b2ce",
+    "depends": []
+  },
+  {
+    "name": "helix",
+    "category": "editors",
+    "version": "24.7",
+    "description": "Post-modern modal text editor",
+    "binary": "hx",
+    "size_mb": 40,
+    "download_url": "https://packages.aashutarminal.dev/editors/helix-24.7.tar.gz",
+    "sha256": "6c630c3e7cd49f2c309a67c354650cf115fc61630bf14499a4d0ef4fbe2e04d8",
+    "depends": []
+  },
+  {
+    "name": "joe",
+    "category": "editors",
+    "version": "4.6",
+    "description": "Joe's Own Editor",
+    "binary": "joe",
+    "size_mb": 47,
+    "download_url": "https://packages.aashutarminal.dev/editors/joe-4.6.tar.gz",
+    "sha256": "9b2a1c57021c51490a35ed6e1e13dbf07f02a162d9ea70c4de5445850b9fc9e3",
+    "depends": []
+  },
+  {
+    "name": "ed",
+    "category": "editors",
+    "version": "1.20",
+    "description": "The standard text editor",
+    "binary": "ed",
+    "size_mb": 54,
+    "download_url": "https://packages.aashutarminal.dev/editors/ed-1.20.tar.gz",
+    "sha256": "e009e87a9519e6eb06b6cc033a4e0f1aa5b77388a2d44db97b8eaf4f0151aa37",
+    "depends": []
+  }
+]

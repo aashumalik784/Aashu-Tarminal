@@ -1,0 +1,3 @@
+Store listing metadata (title, short/full description, changelog) goes
+under metadata/en-US/ following the standard fastlane supply layout.
+Populate before first Play Store release.
