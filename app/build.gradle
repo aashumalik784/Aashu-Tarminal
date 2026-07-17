@@ -27,10 +27,23 @@ android {
         }
     }
 
+    signingConfigs {
+        // Uses the standard Android debug keystore so CI can produce an
+        // installable release APK without needing a real signing secret.
+        // Replace with your own keystore before publishing to Play Store.
+        debugSigning {
+            storeFile file("${System.getProperty('user.home')}/.android/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugSigning
         }
         debug {
             minifyEnabled false
