@@ -38,46 +38,64 @@ class EnvironmentSetup(
         val arch = termuxArchFor(abi)
         val assetName = "bootstrap/bootstrap-$arch.zip"
 
-        runCatching {
-            context.assets.open(assetName).use { input ->
-                ZipInputStream(input).use { zis ->
-                    var entry = zis.nextEntry
-                    while (entry != null) {
-                        // Termux bootstrap zips store symlinks as a special
-                        // "SYMLINKS.txt" manifest rather than real zip
-                        // symlink entries (zip has no native symlink
-                        // support). Handle that file specially; everything
-                        // else extracts as a normal file.
-                        if (entry.name == "SYMLINKS.txt") {
-                            zis.bufferedReader().readLines().forEach { line ->
-                                val parts = line.split("←", "<-").map { it.trim() }
-                                if (parts.size == 2) {
-                                    val target = File(prefixDir, parts[1])
-                                    target.parentFile?.mkdirs()
-                                    runCatching {
-                                        android.system.Os.symlink(parts[0], target.absolutePath)
-                                    }
+        val availableAssets = runCatching { context.assets.list("bootstrap")?.toList() ?: emptyList() }
+            .getOrElse { emptyList() }
+
+        if (assetName.removePrefix("bootstrap/") !in availableAssets) {
+            throw IllegalStateException(
+                "Expected asset '$assetName' not found. Files actually bundled " +
+                    "under assets/bootstrap/: ${availableAssets.ifEmpty { listOf("(none)") }}"
+            )
+        }
+
+        val assetSize = runCatching {
+            context.assets.openFd(assetName).use { it.length }
+        }.getOrDefault(-1L)
+        if (assetSize < 1000L) {
+            throw IllegalStateException(
+                "Asset '$assetName' exists but is suspiciously small (${assetSize} bytes) -- " +
+                    "the build-time download likely failed or fetched an error page instead of the real archive."
+            )
+        }
+
+        context.assets.open(assetName).use { input ->
+            ZipInputStream(input).use { zis ->
+                var entry = zis.nextEntry
+                var filesWritten = 0
+                while (entry != null) {
+                    // Termux bootstrap zips store symlinks as a special
+                    // "SYMLINKS.txt" manifest rather than real zip
+                    // symlink entries (zip has no native symlink
+                    // support). Handle that file specially; everything
+                    // else extracts as a normal file.
+                    if (entry.name == "SYMLINKS.txt") {
+                        zis.bufferedReader().readLines().forEach { line ->
+                            val parts = line.split("←", "<-").map { it.trim() }
+                            if (parts.size == 2) {
+                                val target = File(prefixDir, parts[1])
+                                target.parentFile?.mkdirs()
+                                runCatching {
+                                    android.system.Os.symlink(parts[0], target.absolutePath)
                                 }
                             }
-                        } else {
-                            val outFile = File(prefixDir, entry.name)
-                            if (entry.isDirectory) {
-                                outFile.mkdirs()
-                            } else {
-                                outFile.parentFile?.mkdirs()
-                                outFile.outputStream().use { zis.copyTo(it) }
-                                outFile.setExecutable(true)
-                            }
                         }
-                        entry = zis.nextEntry
+                    } else {
+                        val outFile = File(prefixDir, entry.name)
+                        if (entry.isDirectory) {
+                            outFile.mkdirs()
+                        } else {
+                            outFile.parentFile?.mkdirs()
+                            outFile.outputStream().use { zis.copyTo(it) }
+                            outFile.setExecutable(true)
+                            filesWritten++
+                        }
                     }
+                    entry = zis.nextEntry
+                }
+                if (filesWritten == 0) {
+                    throw IllegalStateException("Zip '$assetName' opened but contained 0 extractable files.")
                 }
             }
-        }.onFailure {
-            // No bundled bootstrap for this arch (e.g. local debug build
-            // that skipped downloadBootstraps) -- BootstrapManager will
-            // report isBootstrapped() == false and the UI can prompt a
-            // retry once the CI-built APK (with real assets) is installed.
         }
     }
 

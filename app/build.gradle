@@ -12,11 +12,16 @@ plugins {
 // an empty placeholder.
 task downloadBootstraps {
     doLast {
-        // Ask GitHub for the latest bootstrap-* release instead of
-        // hardcoding a tag, so this never goes stale.
-        def apiUrl = "https://api.github.com/repos/termux/termux-packages/releases/latest"
-        def json = new groovy.json.JsonSlurper().parse(new URL(apiUrl))
-        def bootstrapTag = json.tag_name
+        // termux-packages publishes releases for more than just bootstraps,
+        // so /releases/latest is NOT reliable -- explicitly find the most
+        // recent release whose tag starts with "bootstrap-".
+        def apiUrl = "https://api.github.com/repos/termux/termux-packages/releases?per_page=30"
+        def releases = new groovy.json.JsonSlurper().parse(new URL(apiUrl))
+        def bootstrapRelease = releases.find { it.tag_name.toString().startsWith("bootstrap-") }
+        if (bootstrapRelease == null) {
+            throw new GradleException("No bootstrap-* release found in the latest 30 termux-packages releases.")
+        }
+        def bootstrapTag = bootstrapRelease.tag_name
         println "Using Termux bootstrap release: ${bootstrapTag}"
 
         def arches = ["aarch64", "arm", "x86_64", "i686"]
@@ -24,13 +29,13 @@ task downloadBootstraps {
         assetsDir.mkdirs()
         arches.each { arch ->
             def dest = new File(assetsDir, "bootstrap-${arch}.zip")
-            if (!dest.exists()) {
-                def url = "https://github.com/termux/termux-packages/releases/download/${bootstrapTag}/bootstrap-${arch}.zip"
-                println "Downloading Termux bootstrap: ${url}"
-                ant.get(src: url, dest: dest, verbose: true, retries: 3)
-            } else {
-                println "Bootstrap already present: ${dest}"
+            def url = "https://github.com/termux/termux-packages/releases/download/${bootstrapTag}/bootstrap-${arch}.zip"
+            println "Downloading Termux bootstrap: ${url}"
+            ant.get(src: url, dest: dest, verbose: true, retries: 3)
+            if (!dest.exists() || dest.length() < 1000) {
+                throw new GradleException("Downloaded bootstrap-${arch}.zip looks invalid (size=${dest.exists() ? dest.length() : 0} bytes). URL: ${url}")
             }
+            println "OK: bootstrap-${arch}.zip (${dest.length()} bytes)"
         }
     }
 }
