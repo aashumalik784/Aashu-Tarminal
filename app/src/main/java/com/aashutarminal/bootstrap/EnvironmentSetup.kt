@@ -48,23 +48,16 @@ class EnvironmentSetup(
             )
         }
 
-        val assetSize = runCatching {
-            context.assets.openFd(assetName).use { it.length }
-        }.getOrDefault(-1L)
-        // -1 means "unknown length" (AssetManager can't report a size for
-        // compressed assets via openFd) -- not necessarily a problem, so
-        // only fail when we got a real, definitively-too-small size.
-        if (assetSize in 0 until 1000L) {
-            throw IllegalStateException(
-                "Asset '$assetName' exists but is suspiciously small (${assetSize} bytes) -- " +
-                    "the build-time download likely failed or fetched an error page instead of the real archive."
-            )
-        }
-
+        // NOTE: deliberately using a single context.assets.open() call for
+        // everything below. Mixing this with a separate assets.openFd()
+        // call (e.g. for an upfront size check) can cause "Stream closed"
+        // errors, since AssetManager can share underlying file descriptors
+        // across calls for the same asset path -- closing one closes both.
+        var filesWritten = 0
+        var totalBytes = 0L
         context.assets.open(assetName).use { input ->
             ZipInputStream(input).use { zis ->
                 var entry = zis.nextEntry
-                var filesWritten = 0
                 while (entry != null) {
                     // Termux bootstrap zips store symlinks as a special
                     // "SYMLINKS.txt" manifest rather than real zip
@@ -72,7 +65,9 @@ class EnvironmentSetup(
                     // support). Handle that file specially; everything
                     // else extracts as a normal file.
                     if (entry.name == "SYMLINKS.txt") {
-                        zis.bufferedReader().readLines().forEach { line ->
+                        val text = zis.readBytes().toString(Charsets.UTF_8)
+                        text.lineSequence().forEach { line ->
+                            if (line.isBlank()) return@forEach
                             val parts = line.split("←", "<-").map { it.trim() }
                             if (parts.size == 2) {
                                 val target = File(prefixDir, parts[1])
@@ -82,23 +77,33 @@ class EnvironmentSetup(
                                 }
                             }
                         }
-                    } else {
+                    } else if (!entry.isDirectory) {
                         val outFile = File(prefixDir, entry.name)
-                        if (entry.isDirectory) {
-                            outFile.mkdirs()
-                        } else {
-                            outFile.parentFile?.mkdirs()
-                            outFile.outputStream().use { zis.copyTo(it) }
-                            outFile.setExecutable(true)
-                            filesWritten++
-                        }
+                        outFile.parentFile?.mkdirs()
+                        val bytes = zis.readBytes()
+                        outFile.writeBytes(bytes)
+                        outFile.setExecutable(true)
+                        filesWritten++
+                        totalBytes += bytes.size
+                    } else {
+                        File(prefixDir, entry.name).mkdirs()
                     }
                     entry = zis.nextEntry
                 }
-                if (filesWritten == 0) {
-                    throw IllegalStateException("Zip '$assetName' opened but contained 0 extractable files.")
-                }
             }
+        }
+
+        if (filesWritten == 0) {
+            throw IllegalStateException("Zip '$assetName' opened but contained 0 extractable files.")
+        }
+        if (totalBytes < 1_000_000L) {
+            // A real Termux bootstrap is tens of MB; a few KB means we
+            // extracted an error page or truncated archive, not the
+            // genuine userland.
+            throw IllegalStateException(
+                "Zip '$assetName' extracted only ${totalBytes} bytes across $filesWritten files -- " +
+                    "too small to be a real bootstrap archive."
+            )
         }
     }
 

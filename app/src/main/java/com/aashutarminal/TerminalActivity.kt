@@ -22,7 +22,7 @@ class TerminalActivity : ComponentActivity() {
 
         session = TerminalSession(
             shellPath = env.shellPath,
-            args = arrayOf("-l"),
+            args = emptyArray(),
             cwd = env.homeDir,
             envVars = env.toEnvArray()
         )

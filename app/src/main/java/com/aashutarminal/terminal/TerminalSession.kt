@@ -40,6 +40,12 @@ class TerminalSession(
         }
 
         running = true
+        // Some minimal shells (e.g. Android's toolbox sh) don't print a
+        // prompt until they've read at least one line -- nudge it.
+        Thread {
+            Thread.sleep(300)
+            runCatching { TerminalNative.write(ptyFd, byteArrayOf('\n'.code.toByte())) }
+        }.start()
         readerThread = Thread {
             val buffer = ByteArray(4096)
             while (running) {
