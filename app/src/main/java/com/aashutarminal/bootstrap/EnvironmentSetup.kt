@@ -51,7 +51,10 @@ class EnvironmentSetup(
         val assetSize = runCatching {
             context.assets.openFd(assetName).use { it.length }
         }.getOrDefault(-1L)
-        if (assetSize < 1000L) {
+        // -1 means "unknown length" (AssetManager can't report a size for
+        // compressed assets via openFd) -- not necessarily a problem, so
+        // only fail when we got a real, definitively-too-small size.
+        if (assetSize in 0 until 1000L) {
             throw IllegalStateException(
                 "Asset '$assetName' exists but is suspiciously small (${assetSize} bytes) -- " +
                     "the build-time download likely failed or fetched an error page instead of the real archive."

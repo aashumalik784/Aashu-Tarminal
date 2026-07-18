@@ -96,6 +96,14 @@ android {
         }
     }
 
+    androidResources {
+        // Without this, AAPT re-compresses our already-compressed
+        // bootstrap-<arch>.zip assets, which breaks AssetManager.openFd()
+        // (returns length -1) and wastes CPU double-compressing data that
+        // is already compressed.
+        noCompress "zip"
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
