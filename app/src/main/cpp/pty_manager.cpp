@@ -5,8 +5,10 @@
 
 #include "native-lib.h"
 #include <android/log.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <pty.h>
+#include <string>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/wait.h>
