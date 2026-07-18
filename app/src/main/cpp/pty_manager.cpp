@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <pty.h>
+#include <stdio.h>
 #include <string>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -112,14 +113,21 @@ Java_com_aashutarminal_terminal_TerminalNative_createSubprocess(
                 char procPath[64];
                 snprintf(procPath, sizeof(procPath), "/proc/self/fd/%d", mfd);
                 execve(procPath, cArgs.data(), cEnv.data());
-                // If we reach here, the memfd exec failed -- fall through.
+                // If we reach here, the memfd exec failed -- report why,
+                // directly to the pty (stderr is already wired to it by
+                // forkpty), then fall through to the plain execve attempt.
+                dprintf(STDERR_FILENO, "[memfd exec failed: %s]\r\n", strerror(errno));
                 close(mfd);
             } else {
+                dprintf(STDERR_FILENO, "[memfd_create failed: %s]\r\n", strerror(errno));
                 close(srcFd);
             }
+        } else {
+            dprintf(STDERR_FILENO, "[open('%s') failed: %s]\r\n", shell, strerror(errno));
         }
 
         execve(shell, cArgs.data(), cEnv.data());
+        dprintf(STDERR_FILENO, "[plain execve failed: %s]\r\n", strerror(errno));
         _exit(127); // execve failed
     }
 
