@@ -11,6 +11,7 @@
 #include <string>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/syscall.h>
 #include <sys/wait.h>
 #include <termios.h>
 #include <unistd.h>
@@ -18,6 +19,30 @@
 
 #define LOG_TAG "AashuPty"
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+
+// The memfd_create() libc wrapper only exists from API 30 onward on
+// Android, but the underlying kernel syscall has existed for far longer.
+// Call it directly via syscall() so this works on our minSdk (24) too.
+#ifndef __NR_memfd_create
+  #if defined(__aarch64__)
+    #define __NR_memfd_create 279
+  #elif defined(__arm__)
+    #define __NR_memfd_create 385
+  #elif defined(__x86_64__)
+    #define __NR_memfd_create 319
+  #elif defined(__i386__)
+    #define __NR_memfd_create 356
+  #endif
+#endif
+
+static int aashu_memfd_create(const char *name) {
+#ifdef __NR_memfd_create
+    return (int) syscall(__NR_memfd_create, name, 0);
+#else
+    (void) name;
+    return -1;
+#endif
+}
 
 static std::vector<std::string> jarrayToVec(JNIEnv *env, jobjectArray arr) {
     std::vector<std::string> out;
@@ -61,6 +86,38 @@ Java_com_aashutarminal_terminal_TerminalNative_createSubprocess(
         std::vector<char *> cEnv;
         for (auto &e : envVars) cEnv.push_back(const_cast<char *>(e.c_str()));
         cEnv.push_back(nullptr);
+
+        // Android 10+ blocks executing binaries directly from app-private
+        // storage (W^X hardening) -- the same problem Termux's own
+        // "termux-exec" solves. Work around it by copying the binary into
+        // an anonymous, kernel-backed memfd and exec'ing that via its
+        // /proc/self/fd/N path, which isn't subject to the noexec mount
+        // restriction. Falls back to a plain execve() for binaries that
+        // live somewhere already executable (e.g. /system/bin/sh).
+        int srcFd = open(shell, O_RDONLY);
+        if (srcFd >= 0) {
+            int mfd = aashu_memfd_create("aashu-exe");
+            if (mfd >= 0) {
+                char buf[65536];
+                ssize_t n;
+                while ((n = read(srcFd, buf, sizeof(buf))) > 0) {
+                    ssize_t off = 0;
+                    while (off < n) {
+                        ssize_t w = write(mfd, buf + off, n - off);
+                        if (w <= 0) break;
+                        off += w;
+                    }
+                }
+                close(srcFd);
+                char procPath[64];
+                snprintf(procPath, sizeof(procPath), "/proc/self/fd/%d", mfd);
+                execve(procPath, cArgs.data(), cEnv.data());
+                // If we reach here, the memfd exec failed -- fall through.
+                close(mfd);
+            } else {
+                close(srcFd);
+            }
+        }
 
         execve(shell, cArgs.data(), cEnv.data());
         _exit(127); // execve failed
