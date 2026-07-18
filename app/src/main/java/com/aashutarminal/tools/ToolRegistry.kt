@@ -8,8 +8,9 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 /**
- * Loads the merged tools.json (generated from tools-registry/tools/*.json
- * by tools-registry/generate_registry.py) shipped in assets.
+ * Loads the merged tools.json (generated from the per-category JSON files
+ * under tools-registry/tools/ by tools-registry/generate_registry.py)
+ * shipped in assets.
  */
 class ToolRegistry(private val context: Context) {
 
