@@ -19,16 +19,36 @@ class TerminalSession(
     @Volatile private var running = false
 
     fun start() {
-        val result = TerminalNative.createSubprocess(shellPath, cwd, args, envVars)
+        val banner = "Starting shell: $shellPath\r\n"
+        emulator.feed(banner.toByteArray(), banner.length)
+
+        val result = try {
+            TerminalNative.createSubprocess(shellPath, cwd, args, envVars)
+        } catch (t: Throwable) {
+            val msg = "\r\nFailed to start native PTY: ${t.message}\r\n"
+            emulator.feed(msg.toByteArray(), msg.length)
+            return
+        }
         ptyFd = result[0]
         pid = result[1]
-        running = true
 
+        if (pid <= 0 || ptyFd < 0) {
+            val msg = "\r\nCould not launch '$shellPath' (pid=$pid, fd=$ptyFd).\r\n" +
+                "The shell binary may be missing or not executable for this device's architecture.\r\n"
+            emulator.feed(msg.toByteArray(), msg.length)
+            return
+        }
+
+        running = true
         readerThread = Thread {
             val buffer = ByteArray(4096)
             while (running) {
                 val n = TerminalNative.read(ptyFd, buffer)
-                if (n <= 0) break
+                if (n <= 0) {
+                    val msg = "\r\n[process exited]\r\n"
+                    emulator.feed(msg.toByteArray(), msg.length)
+                    break
+                }
                 emulator.feed(buffer, n)
             }
         }.apply { start() }

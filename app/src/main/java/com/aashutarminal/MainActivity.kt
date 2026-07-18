@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
                     var bootstrapped by remember {
                         mutableStateOf(app.bootstrapManager.isBootstrapped())
                     }
+                    var bootstrapError by remember { mutableStateOf<String?>(null) }
 
                     Column(
                         modifier = Modifier
@@ -42,10 +43,20 @@ class MainActivity : ComponentActivity() {
                             Text("First-time setup required")
                             Spacer(Modifier.height(8.dp))
                             Button(onClick = {
-                                app.bootstrapManager.runBootstrap { }
+                                bootstrapError = app.bootstrapManager.runBootstrap { }
                                 bootstrapped = app.bootstrapManager.isBootstrapped()
                             }) {
                                 Text("Run bootstrap")
+                            }
+                            bootstrapError?.let { err ->
+                                Spacer(Modifier.height(12.dp))
+                                Text(err, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                            }
+                            Spacer(Modifier.height(8.dp))
+                            TextButton(onClick = {
+                                startActivity(Intent(this@MainActivity, TerminalActivity::class.java))
+                            }) {
+                                Text("Open terminal anyway (limited shell)")
                             }
                         } else {
                             Button(onClick = {
