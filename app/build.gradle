@@ -41,6 +41,74 @@ task downloadBootstraps {
 }
 preBuild.dependsOn downloadBootstraps
 
+// Android 10+ (API 29+) blocks executing any file that lives in an app's
+// own writable data directory (W^X hardening) -- the exact problem
+// Termux's own "termux-exec" solves. The officially sanctioned exception
+// is the app's *native library* directory, where the installer grants
+// exec permission for .so files declared under jniLibs/. This task takes
+// every executable/shared-lib from the downloaded bootstrap archives and
+// re-packages it as a jniLibs/<abi>/lib*.so entry (renamed, since Android
+// requires that naming pattern), plus writes a JSON manifest mapping the
+// original relative path (e.g. "bin/bash") to its new jniLibs filename so
+// the app can find things at runtime. See exec_shim.cpp for the other
+// half of this (redirecting exec() calls bash makes internally).
+task repackageBootstrapExecs {
+    dependsOn downloadBootstraps
+    doLast {
+        def archToAbi = [
+            "aarch64": "arm64-v8a",
+            "arm"    : "armeabi-v7a",
+            "x86_64" : "x86_64"
+            // i686/x86 intentionally skipped -- not in our abiFilters.
+        ]
+        def bootstrapDir = file("src/main/assets/bootstrap")
+        def jniLibsDir = file("src/main/jniLibs")
+        def assetsMapDir = file("src/main/assets/bootstrap")
+
+        archToAbi.each { arch, abi ->
+            def zipFile = new File(bootstrapDir, "bootstrap-${arch}.zip")
+            if (!zipFile.exists()) {
+                throw new GradleException("Missing ${zipFile} -- downloadBootstraps should have created it.")
+            }
+            def outAbiDir = new File(jniLibsDir, abi)
+            outAbiDir.mkdirs()
+
+            def manifest = [:]
+            def seenNames = [] as Set
+
+            zipFile.withInputStream { fis ->
+                new java.util.zip.ZipInputStream(fis).withCloseable { zis ->
+                    def entry
+                    while ((entry = zis.nextEntry) != null) {
+                        def name = entry.name
+                        def needsExec = !entry.directory && (name.startsWith("bin/") || (name.startsWith("lib/") && name.endsWith(".so")))
+                        if (needsExec) {
+                            def safe = name.replaceAll('[^A-Za-z0-9]', '_')
+                            def soName = "libtx_${safe}.so"
+                            // Guard against name collisions after sanitizing.
+                            def uniq = soName
+                            int i = 1
+                            while (!seenNames.add(uniq)) {
+                                uniq = "libtx_${safe}_${i}.so"
+                                i++
+                            }
+                            def outFile = new File(outAbiDir, uniq)
+                            outFile.parentFile.mkdirs()
+                            outFile.bytes = zis.getBytes()
+                            manifest[name] = uniq
+                        }
+                    }
+                }
+            }
+
+            def manifestFile = new File(assetsMapDir, "exec-map-${arch}.json")
+            manifestFile.text = groovy.json.JsonOutput.toJson(manifest)
+            println "repackageBootstrapExecs: ${manifest.size()} executables -> jniLibs/${abi}/ (manifest: ${manifestFile.name})"
+        }
+    }
+}
+preBuild.dependsOn repackageBootstrapExecs
+
 android {
     namespace 'com.aashutarminal'
     compileSdk 34

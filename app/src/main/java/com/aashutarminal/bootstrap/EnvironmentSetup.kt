@@ -107,6 +107,19 @@ class EnvironmentSetup(
         }
     }
 
+    /**
+     * Flattens the exec-map (loaded by BootstrapManager from the JSON
+     * asset) into a plain "key\tvalue\n" file under $PREFIX/etc/, since
+     * the native LD_PRELOAD shim (exec_shim.cpp) is C code that shouldn't
+     * need a JSON parser for a few hundred short lines.
+     */
+    fun writeExecMapTsv(execMap: Map<String, String>) {
+        val etcDir = File(prefixDir, "etc").apply { mkdirs() }
+        val sb = StringBuilder()
+        execMap.forEach { (key, value) -> sb.append(key).append('\t').append(value).append('\n') }
+        File(etcDir, "exec-map.tsv").writeText(sb.toString())
+    }
+
     fun writeDefaultConfig() {
         File(homeDir, ".bashrc").writeText(
             """

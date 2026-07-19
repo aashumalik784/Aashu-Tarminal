@@ -1,6 +1,7 @@
 package com.aashutarminal.bootstrap
 
 import android.content.Context
+import org.json.JSONObject
 import java.io.File
 
 /**
@@ -8,11 +9,42 @@ import java.io.File
  * from any other project). Lays down a minimal Linux userland under the
  * app's private storage and exposes the environment needed to spawn a
  * login shell.
+ *
+ * Android 10+ blocks executing files from an app's own writable storage,
+ * so the actual bash/busybox binaries can't run straight out of $PREFIX.
+ * Instead, app/build.gradle's `repackageBootstrapExecs` task copies every
+ * executable into the APK's native-library directory (the one place
+ * Android grants exec permission) under a sanitized libtx_*.so name, and
+ * writes a JSON manifest (assets/bootstrap/exec-map-<arch>.json) mapping
+ * original relative paths ("bin/bash") to those names. This class resolves
+ * the shell through that manifest, and an LD_PRELOAD shim (exec_shim.cpp,
+ * built as libaashuexec.so) applies the same redirect to every command
+ * the shell itself runs afterwards.
  */
 class BootstrapManager(private val context: Context) {
 
     private val prefixDir: File get() = File(context.filesDir, "usr")
     private val homeDir: File get() = File(context.filesDir, "home")
+    private val nativeLibDir: String get() = context.applicationInfo.nativeLibraryDir
+
+    private fun termuxArchFor(abi: String): String = when (abi) {
+        "arm64-v8a" -> "aarch64"
+        "armeabi-v7a" -> "arm"
+        "x86_64" -> "x86_64"
+        "x86" -> "i686"
+        else -> "aarch64"
+    }
+
+    private fun currentArch(): String =
+        termuxArchFor(android.os.Build.SUPPORTED_ABIS.firstOrNull() ?: "arm64-v8a")
+
+    /** original relative path ("bin/bash") -> jniLibs filename ("libtx_bin_bash.so") */
+    private fun loadExecMap(): Map<String, String> = runCatching {
+        val text = context.assets.open("bootstrap/exec-map-${currentArch()}.json")
+            .bufferedReader().readText()
+        val json = JSONObject(text)
+        json.keys().asSequence().associateWith { json.getString(it) }
+    }.getOrDefault(emptyMap())
 
     /** True only if a real, executable shell binary was actually extracted. */
     fun isBootstrapped(): Boolean = resolveShell() != null
@@ -31,7 +63,9 @@ class BootstrapManager(private val context: Context) {
                 createDirLayout()
                 progress(0.2f)
                 extractBaseRootfs()
-                progress(0.6f)
+                progress(0.5f)
+                writeExecMapTsv(loadExecMap())
+                progress(0.7f)
                 writeDefaultConfig()
                 progress(0.9f)
             }
@@ -56,26 +90,34 @@ class BootstrapManager(private val context: Context) {
         homeDir.deleteRecursively()
     }
 
-    /** Finds a real, executable shell: our bootstrapped bash/sh first, else null. */
+    /**
+     * Finds the real, exec-permitted path for our shell: the jniLibs copy
+     * of bash/sh (via the exec map), not the (non-executable) extracted
+     * copy under $PREFIX.
+     */
     private fun resolveShell(): File? {
-        val candidates = listOf(
-            File(prefixDir, "bin/bash"),
-            File(prefixDir, "bin/sh"),
-            File(prefixDir, "bin/busybox")
-        )
-        return candidates.firstOrNull { it.exists() && it.canExecute() }
+        val map = loadExecMap()
+        val candidates = listOf("bin/bash", "bin/sh", "bin/busybox")
+        for (rel in candidates) {
+            val soName = map[rel] ?: continue
+            val real = File(nativeLibDir, soName)
+            if (real.exists() && real.canExecute()) return real
+        }
+        return null
     }
 
     fun buildSessionEnvironment(): SessionEnv {
         // Fall back to Android's own built-in shell if our bootstrap isn't
         // present -- this guarantees the terminal always shows *something*
         // usable instead of a silent blank screen.
-        val shell = resolveShell()?.absolutePath ?: "/system/bin/sh"
+        val resolved = resolveShell()
+        val shell = resolved?.absolutePath ?: "/system/bin/sh"
         return SessionEnv(
             shellPath = shell,
             homeDir = homeDir.absolutePath,
             prefixDir = prefixDir.absolutePath,
-            usingFallbackShell = resolveShell() == null
+            nativeLibDir = nativeLibDir,
+            usingFallbackShell = resolved == null
         )
     }
 
@@ -83,14 +125,25 @@ class BootstrapManager(private val context: Context) {
         val shellPath: String,
         val homeDir: String,
         val prefixDir: String,
+        val nativeLibDir: String,
         val usingFallbackShell: Boolean = false
     ) {
-        fun toEnvArray(): Array<String> = arrayOf(
-            "HOME=$homeDir",
-            "PREFIX=$prefixDir",
-            "PATH=$prefixDir/bin:/system/bin",
-            "LD_LIBRARY_PATH=$prefixDir/lib",
-            "TERM=xterm-256color"
-        )
+        fun toEnvArray(): Array<String> {
+            val base = mutableListOf(
+                "HOME=$homeDir",
+                "PREFIX=$prefixDir",
+                "PATH=$prefixDir/bin:/system/bin",
+                "LD_LIBRARY_PATH=$prefixDir/lib",
+                "TERM=xterm-256color"
+            )
+            if (!usingFallbackShell) {
+                // Consumed by exec_shim.cpp (libaashuexec.so) to redirect
+                // every command the shell runs to its jniLibs equivalent.
+                base += "AASHU_NATIVE_LIB_DIR=$nativeLibDir"
+                base += "AASHU_EXEC_MAP_TSV=$prefixDir/etc/exec-map.tsv"
+                base += "LD_PRELOAD=$nativeLibDir/libaashuexec.so"
+            }
+            return base.toTypedArray()
+        }
     }
 }
